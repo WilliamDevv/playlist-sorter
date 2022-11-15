@@ -3,15 +3,34 @@
 ##########
 import base64
 import requests
+import webbrowser
 
 def get_access_token():
-    client_creds = f"7efceb8a917642719a27f76a8a458978:ccda20d8959e46efb384184cabf3e260".encode()
-    client_creds_b64 = base64.b64encode(client_creds)
+    client_id = "7efceb8a917642719a27f76a8a458978"
+    client_secret = "ccda20d8959e46efb384184cabf3e260"
+
+    # auth_url = "https://accounts.spotify.com/authorize"
+    # auth_data = {
+    #     "client_id": client_id,
+    #     "response_type": "code",
+    #     "redirect_uri": "https://github.com/WilliamDevv/playlist-sorter",
+    #     "scope": "playlist-modify-public+playlist-modify-private"
+    # }
+
+    # auth_url_v2 = f"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri=https%3A%2F%2Fgithub.com%2FWilliamDevv%2Fplaylist-sorter&scope=playlist-modify-public%20playlist-modify-private"
+    # webbrowser.open(auth_url_v2)
+
+    # code = requests.get(auth_url, auth_data)
+    # print(code)
+
+    client_creds_b64 = base64.b64encode(f"{client_id}:{client_secret}".encode())
 
     token_url = "https://accounts.spotify.com/api/token"
     token_data = {
         "grant_type": "client_credentials",
-        "scope": "playlist-read-public  playlist-modify-public playlist-read-private  playlist-modify-private"
+        "code": "AQDZ0zinIy3dgMWs7IZVwJSOIoR1GAUULkgz9Qtl6_9ajMHkhzOpA5RF9534HDr4dHVfsn675DmIM9V-PDlD5plMqQLsQhblBSYU4fFfeUg74Hc9NmJF0YpGGh9YjwrZ3n1NcNPCbGL4LrFcFoWVaweWyhYnFibrZVtwDjp5QTS3MT9geYx226S0blwaMK_xbArJV9GL1BMBYo9zJ8ZT_qfxuYpYfG9JKE6qXSZXrHwz3bAaStjSNVtnijQMiTCMox7X",
+        #"code": f"{code}",
+        "redirect_uri": "https://github.com/WilliamDevv/playlist-sorter"
     }
     token_header = {
         "Authorization": f"Basic {client_creds_b64.decode()}"
@@ -101,7 +120,9 @@ def add_tracks(playlist_id):
 #   PROGRAMME PRINCIPALE   #
 ############################
 if __name__ == '__main__':
-    ACCESS_TOKEN = get_access_token()
+    # ACCESS_TOKEN = get_access_token()
+    ACCESS_TOKEN = "BQAEd-ztYs2Eljh1OYZWurjWc6KQ04VoCFNv3kP21ALWir8_7HQ57Bgo2D8w2qkgxUsDe7BW28iNaxJG3tzFmNOVRpX8bTWuKEHZc_EHOY-PjVx2Co8Ki-Qpu8G5GRzGO_8O1Rgg-4EOSEImcwbASNOnHSyFGzldyRBxWVwzHoiGaZqMJq1BOJ6EAiR2m8gV8fAVL4zNU8JJKMG4zsgUvgzK8iHfs2b3xXaAA_a2PBigmDIqYYf_fKv3CGlCbHU8"
+    print(f"Access token : {ACCESS_TOKEN}")
 
     mix_detente_items = get_playlist_items('37i9dQZF1EVHGWrwldPRtj')
     bing_chilling_items = get_playlist_items('6baTLBdDiym4LEiLr7a6Ij')
@@ -111,4 +132,4 @@ if __name__ == '__main__':
     if len(new_tracks) > 0:
         add_tracks('6baTLBdDiym4LEiLr7a6Ij')
     else:
-        print('0 sons à ajouter')
+        print('\n0 sons à ajouter')
